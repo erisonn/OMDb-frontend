@@ -1,10 +1,10 @@
 import { QueryClient } from "@tanstack/react-query";
 
 const API_KEY = import.meta.env.VITE_API_KEY;
-const baseUrl = `http://www.omdbapi.com/?apikey=${API_KEY}&s=crash`;
+const baseUrl = `http://www.omdbapi.com/?apikey=${API_KEY}`;
 
-export const fetchFunction = () => {
-  const results = fetch(baseUrl).then((results) => {
+export const fetchFunction = (queryString: string) => {
+  const results = fetch(baseUrl + queryString).then((results) => {
     return results.json();
   });
   return results;
