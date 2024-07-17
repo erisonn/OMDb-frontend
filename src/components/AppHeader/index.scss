@@ -1,8 +1,9 @@
 .AppHeader {
+  height: 87px;
   margin-top: 15px;
+  display: flex;
+  justify-content: center;
   nav {
-    display: flex;
-    justify-content: space-between;
     a {
       color: rgba(255, 255, 255, 0.7);
       text-decoration: none;
