@@ -1,14 +1,15 @@
 import { NavLink } from "react-router-dom";
+import './index.scss'
 
 const AppHeader = () => {
   return (
-    <header>
+    <header className="AppHeader">
       <nav>
-        <NavLink to={"/"}>Movies</NavLink>
-        <NavLink to={"/random"}>Random</NavLink>
-        <NavLink to={"/search"}>Search</NavLink>
-        <NavLink to={"/starred"}>Starred</NavLink>
-        <NavLink to={"/about"}>About</NavLink>
+        <NavLink to={"/"}>MOVIES</NavLink>
+        <NavLink to={"/random"}>RANDOM</NavLink>
+        <NavLink to={"/search"}>SEARCH</NavLink>
+        <NavLink to={"/starred"}>STARRED</NavLink>
+        <NavLink to={"/about"}>ABOUT</NavLink>
       </nav>
     </header>
   );
