@@ -16,7 +16,7 @@ const Search = () => {
     queryFn: (queryKey) =>
       fetchFunction(queryKey.pageParam, `&s=${searchTerm}`),
     getNextPageParam: (lastPage, allPages, lastPageParam) => {
-      if (lastPage.length === 0) {
+      if (lastPage.Response === "False") {
         return undefined;
       }
       return lastPageParam + 1;
@@ -28,11 +28,22 @@ const Search = () => {
     setSearchTerm(inputRef.current?.value ?? null);
   };
 
-  const formattedMoviesList = data?.pages.map((page) => page.Search).flat(1);
+  const formattedMoviesList = data?.pages
+    .reduce((acc, currentPage) => {
+      if (currentPage.Response === "True") {
+        acc.push(currentPage.Search);
+      }
+      return acc;
+    }, [])
+    .flat(1);
+
+  console.log(formattedMoviesList);
   const formattedData = {
     searchResults: formattedMoviesList as Movie[],
     totalResults: data?.pages[0]?.totalResults as number,
   };
+
+  // const isLastpa
 
   return (
     <div className="Centered">
@@ -45,6 +56,7 @@ const Search = () => {
           />
         </form>
         <SearchResults
+          loadMore={fetchNextPage}
           isLoading={isLoading}
           isError={isError}
           searchTerm={searchTerm}
@@ -52,7 +64,6 @@ const Search = () => {
           searchResults={formattedData.searchResults}
         />
       </div>
-      <button onClick={() => fetchNextPage()}>next</button>
     </div>
   );
 };

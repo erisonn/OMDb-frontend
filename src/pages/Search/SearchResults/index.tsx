@@ -6,10 +6,11 @@ interface SearchResultsProps {
   isLoading: boolean;
   isError: boolean;
   searchResults: Movie[];
+  loadMore: () => void;
 }
 
 const SearchResults = (props: SearchResultsProps) => {
-  const { searchTerm, totalResults, searchResults, isLoading, isError } = props;
+  const { searchTerm, totalResults, searchResults, isLoading, isError, loadMore } = props;
 
   if (!searchTerm) return <p>Search for movies here</p>;
 
@@ -22,7 +23,7 @@ const SearchResults = (props: SearchResultsProps) => {
       <h1>
         {totalResults} results for "{searchTerm}"
       </h1>
-      <MoviesList movies={searchResults} />
+      <MoviesList movies={searchResults} loadMore={loadMore}/>
     </div>
   );
 };

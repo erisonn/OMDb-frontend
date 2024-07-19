@@ -1,3 +1,5 @@
+import { useIntersectionObserver } from "usehooks-ts";
+import { useEffect } from "react";
 import "./index.scss";
 
 export type Movie = {
@@ -7,15 +9,37 @@ export type Movie = {
   imdbID: string;
 };
 
-const MoviesList = ({ movies }: { movies: Movie[] }) => {
+const MoviesList = ({
+  movies,
+  loadMore,
+}: {
+  movies: Movie[];
+  loadMore: () => void;
+}) => {
+  const { isIntersecting, ref: infiniteScrollRef } = useIntersectionObserver({
+    threshold: 0.5,
+  });
+
+  useEffect(() => {
+    if (isIntersecting) {
+      loadMore();
+    }
+  }, [isIntersecting]);
+
+  const lastItem = movies.slice(-1)[0];
+
   if (!movies) return <p>No results</p>;
 
   return (
     <div className="MoviesList">
       {movies.map((movie) => (
-        <div className="MoviesListItem" key={movie.imdbID}>
-          <img src={movie.Poster} />
-          <h3>{movie.Title}</h3>
+        <div
+          className="MoviesListItem"
+          key={movie?.imdbID}
+          ref={movie?.imdbID === lastItem?.imdbID ? infiniteScrollRef : null}
+        >
+          <img src={movie?.Poster} />
+          <h3>{movie?.Title}</h3>
         </div>
       ))}
     </div>
