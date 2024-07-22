@@ -9,19 +9,20 @@ const Search = () => {
   const [searchTerm, setSearchTerm] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const { data, fetchNextPage, isError, isLoading } = useInfiniteQuery({
-    enabled: !!searchTerm,
-    queryKey: ["MoviesSearch", searchTerm],
-    initialPageParam: 1,
-    queryFn: (queryKey) =>
-      fetchFunction(queryKey.pageParam, `&s=${searchTerm}`),
-    getNextPageParam: (lastPage, allPages, lastPageParam) => {
-      if (lastPage.Response === "False") {
-        return undefined;
-      }
-      return lastPageParam + 1;
-    },
-  });
+  const { data, fetchNextPage, isError, isLoading, isFetchingNextPage } =
+    useInfiniteQuery({
+      enabled: !!searchTerm,
+      queryKey: ["MoviesSearch", searchTerm],
+      initialPageParam: 1,
+      queryFn: (queryKey) =>
+        fetchFunction(queryKey.pageParam, `&s=${searchTerm}`),
+      getNextPageParam: (lastPage, allPages, lastPageParam) => {
+        if (lastPage.Response === "False") {
+          return undefined;
+        }
+        return lastPageParam + 1;
+      },
+    });
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -37,13 +38,10 @@ const Search = () => {
     }, [])
     .flat(1);
 
-  console.log(formattedMoviesList);
   const formattedData = {
     searchResults: formattedMoviesList as Movie[],
     totalResults: data?.pages[0]?.totalResults as number,
   };
-
-  // const isLastpa
 
   return (
     <div className="Centered">
@@ -63,6 +61,7 @@ const Search = () => {
           totalResults={formattedData.totalResults}
           searchResults={formattedData.searchResults}
         />
+        {isFetchingNextPage && <h1>...</h1>}
       </div>
     </div>
   );
