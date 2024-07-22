@@ -28,7 +28,7 @@ const MoviesList = ({
 
   const lastItem = movies.slice(-1)[0];
 
-  if (!movies) return <p>No results</p>;
+  if (!movies.length) return <p>No movies found</p>;
 
   return (
     <div className="MoviesList">

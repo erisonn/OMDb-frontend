@@ -9,20 +9,26 @@ const Search = () => {
   const [searchTerm, setSearchTerm] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const { data, fetchNextPage, isError, isLoading, isFetchingNextPage } =
-    useInfiniteQuery({
-      enabled: !!searchTerm,
-      queryKey: ["MoviesSearch", searchTerm],
-      initialPageParam: 1,
-      queryFn: (queryKey) =>
-        fetchFunction(queryKey.pageParam, `&s=${searchTerm}`),
-      getNextPageParam: (lastPage, allPages, lastPageParam) => {
-        if (lastPage.Response === "False") {
-          return undefined;
-        }
-        return lastPageParam + 1;
-      },
-    });
+  const {
+    data,
+    fetchNextPage,
+    isError,
+    isLoading,
+    isFetchingNextPage,
+    isFetchNextPageError,
+  } = useInfiniteQuery({
+    enabled: !!searchTerm,
+    queryKey: ["MoviesSearch", searchTerm],
+    initialPageParam: 1,
+    queryFn: (queryKey) =>
+      fetchFunction(queryKey.pageParam, `&s=${searchTerm}`),
+    getNextPageParam: (lastPage, allPages, lastPageParam) => {
+      if (lastPage.Response === "False") {
+        return undefined;
+      }
+      return lastPageParam + 1;
+    },
+  });
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -56,7 +62,7 @@ const Search = () => {
         <SearchResults
           loadMore={fetchNextPage}
           isLoading={isLoading}
-          isError={isError}
+          isError={isError || isFetchNextPageError}
           searchTerm={searchTerm}
           totalResults={formattedData.totalResults}
           searchResults={formattedData.searchResults}
