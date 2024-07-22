@@ -39,7 +39,9 @@ const MoviesList = ({
           ref={movie?.imdbID === lastItem?.imdbID ? infiniteScrollRef : null}
         >
           <img src={movie?.Poster} />
-          <h3>{movie?.Title}</h3>
+          <h3>
+            {movie?.Title} - {movie.Year}
+          </h3>
         </div>
       ))}
     </div>
