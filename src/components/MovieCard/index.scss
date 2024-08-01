@@ -1,4 +1,27 @@
 .MovieCard {
+  position: relative;
+  text-align: center;
+  .StarButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 5px;
+    width: 30px;
+    height: 30px;
+    font-size: 30px;
+    position: absolute;
+    left: 10%;
+    top: 3%;
+    border: 1px solid black;
+    border-radius: 4px;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  .Starred {
+    color: gold;
+    border-color: gold;
+  }
   img {
     width: 180px;
     height: 250px;
