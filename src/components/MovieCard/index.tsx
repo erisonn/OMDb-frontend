@@ -4,7 +4,7 @@ import "./index.scss";
 const MovieCard = ({ movie }: { movie: Movie }) => {
   const favoriteMovie = (movie: Movie) => {
     const moviesFromLocalStorage =
-      JSON.parse(localStorage.getItem("starredMovies") ?? "[]") ?? [];
+      JSON.parse(localStorage.getItem("starredMovies") ?? "[]");
 
     const isMovieAlreadyStarred = !!moviesFromLocalStorage.find(
       (lsMovie: Movie) => lsMovie.imdbID === movie.imdbID
