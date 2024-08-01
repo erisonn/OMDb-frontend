@@ -35,6 +35,7 @@ const MoviesList = ({
     <div className="MoviesList">
       {movies.map((movie) => (
         <div
+          key={movie?.imdbID}
           ref={movie?.imdbID === lastItem?.imdbID ? infiniteScrollRef : null}
         >
           <MovieCard movie={movie} />
