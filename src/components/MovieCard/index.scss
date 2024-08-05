@@ -1,6 +1,7 @@
 .MovieCard {
   position: relative;
   text-align: center;
+  width: 200px;
   .StarButton {
     display: flex;
     justify-content: center;
@@ -28,5 +29,4 @@
     object-fit: fill;
     border-radius: 4px;
   }
-  width: 200px;
 }

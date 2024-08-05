@@ -1,14 +1,16 @@
+import classNames from "classnames";
 import { Movie } from "../MoviesList";
 import "./index.scss";
 
 const MovieCard = ({ movie }: { movie: Movie }) => {
-  const favoriteMovie = (movie: Movie) => {
-    const moviesFromLocalStorage =
-      JSON.parse(localStorage.getItem("starredMovies") ?? "[]");
+  const moviesFromLocalStorage = JSON.parse(
+    localStorage.getItem("starredMovies") ?? "[]"
+  );
+  const isMovieAlreadyStarred = !!moviesFromLocalStorage.find(
+    (lsMovie: Movie) => lsMovie.imdbID === movie.imdbID
+  );
 
-    const isMovieAlreadyStarred = !!moviesFromLocalStorage.find(
-      (lsMovie: Movie) => lsMovie.imdbID === movie.imdbID
-    );
+  const favoriteMovie = (movie: Movie) => {
     if (isMovieAlreadyStarred) return;
 
     const newMoviesFromLocalStorage = JSON.stringify([
@@ -20,7 +22,10 @@ const MovieCard = ({ movie }: { movie: Movie }) => {
 
   return (
     <div className="MovieCard" key={movie?.imdbID}>
-      <button className="StarButton" onClick={() => favoriteMovie(movie)}>
+      <button
+        className={classNames("StarButton", { Starred: isMovieAlreadyStarred })}
+        onClick={() => favoriteMovie(movie)}
+      >
         ☆
       </button>
       <img src={movie?.Poster} />
