@@ -1,7 +1,8 @@
 import classNames from "classnames";
 import { Movie } from "../MoviesList";
-import "./index.scss";
 import { useLocalStorage } from "usehooks-ts";
+import { toast } from "react-toastify";
+import "./index.scss";
 
 const MovieCard = ({ movie }: { movie: Movie }) => {
   const [moviesFromLs, setMoviesFromLs] = useLocalStorage<Movie[]>(
@@ -18,9 +19,11 @@ const MovieCard = ({ movie }: { movie: Movie }) => {
         (movieFromls) => movieFromls.imdbID !== movie.imdbID
       );
       setMoviesFromLs(newMoviesFromLocalStorage);
+      toast.info("Removed from starred");
       return;
     }
     setMoviesFromLs([...moviesFromLs, movie]);
+    toast.info("Added to starred");
   };
 
   return (
