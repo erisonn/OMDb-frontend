@@ -1,29 +1,32 @@
 import classNames from "classnames";
 import { Movie } from "../MoviesList";
 import "./index.scss";
+import { useLocalStorage } from "usehooks-ts";
 
 const MovieCard = ({ movie }: { movie: Movie }) => {
+  const [moviesFromLs, setMoviesFromLs] = useLocalStorage<Movie[]>(
+    "starredMovies",
+    []
+  );
+  const isMovieAlreadyStarred = !!moviesFromLs.find(
+    (lsMovie: Movie) => lsMovie.imdbID === movie.imdbID
+  );
+
   const favoriteMovie = (movie: Movie) => {
-    const moviesFromLocalStorage = JSON.parse(
-      localStorage.getItem("starredMovies") ?? "[]"
-    );
-    const isMovieAlreadyStarred = !!moviesFromLocalStorage.find(
-      (lsMovie: Movie) => lsMovie.imdbID === movie.imdbID
-    );
-
-    if (isMovieAlreadyStarred) return;
-
-    const newMoviesFromLocalStorage = JSON.stringify([
-      ...moviesFromLocalStorage,
-      movie,
-    ]);
-    localStorage.setItem("starredMovies", newMoviesFromLocalStorage);
+    if (isMovieAlreadyStarred) {
+      const newMoviesFromLocalStorage = moviesFromLs.filter(
+        (movieFromls) => movieFromls.imdbID !== movie.imdbID
+      );
+      setMoviesFromLs(newMoviesFromLocalStorage);
+      return;
+    }
+    setMoviesFromLs([...moviesFromLs, movie]);
   };
 
   return (
     <div className="MovieCard" key={movie?.imdbID}>
       <button
-        className={classNames("StarButton", { Starred: false })}
+        className={classNames("StarButton", { Starred: isMovieAlreadyStarred })}
         onClick={() => favoriteMovie(movie)}
       >
         ☆
